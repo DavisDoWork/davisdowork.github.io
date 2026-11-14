@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Thinh Duy Do | Data Analyst</title>
+<meta name="description" content="Thinh Duy Do, Data Science student at UC San Diego. Portfolio of data analysis, dashboards, and machine learning projects." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0b0b0f;
+    --panel: #15151c;
+    --line: #2a2a35;
+    --text: #f2f2f5;
+    --muted: #9a9aa8;
+    --accent: #a25bff;
+    --grad: linear-gradient(90deg, #7a4dff, #ff5fa2 60%, #ff8a3d);
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  h1, h2, h3, .display { font-family: "Archivo Black", "Inter", sans-serif; letter-spacing: -0.01em; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+  .container { width: min(1100px, 92%); margin: 0 auto; }
+  section { padding: 96px 0; border-top: 1px solid var(--line); }
+  .eyebrow { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); }
+  .section-title { font-size: clamp(2rem, 5vw, 3.2rem); margin: 8px 0 40px; }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: rgba(11, 11, 15, 0.8); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .container { display: flex; justify-content: space-between; align-items: center; height: 64px; }
+  .logo { font-family: "Archivo Black", sans-serif; text-decoration: none; }
+  .nav-links { display: flex; gap: 22px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--muted); font-size: 0.9rem; transition: color .2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .progress { position: absolute; bottom: -1px; left: 0; height: 2px; width: 0; background: var(--grad); }
+
+  /* Buttons */
+  .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 999px;
+    text-decoration: none; font-weight: 600; font-size: 0.95rem;
+    border: 1px solid transparent; cursor: pointer; background: none; color: var(--text);
+    transition: transform .2s, box-shadow .2s, background .2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 10px 30px -10px rgba(255, 95, 162, .6); }
+  .btn-ghost { border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--accent); }
+
+  /* Hero */
+  .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 80px; border: none; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; width: 520px; height: 520px; right: -120px; top: 10%;
+    background: radial-gradient(circle, rgba(162, 91, 255, .35), transparent 70%);
+    filter: blur(20px); pointer-events: none;
+  }
+  .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: center; }
+  .hero h1 {
+    font-size: clamp(2.6rem, 7vw, 5.2rem); line-height: 1; margin: 16px 0;
+    background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .role { font-size: clamp(1.2rem, 2.5vw, 1.6rem); color: var(--muted); min-height: 2.2em; }
+  .role .caret { display: inline-block; width: 2px; height: 1em; background: var(--accent); vertical-align: middle; margin-left: 4px; animation: blink 1s steps(2) infinite; }
+  @keyframes blink { to { visibility: hidden; } }
+  .hero-sub { margin: 20px 0 32px; max-width: 540px; color: var(--muted); }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .photo-wrap {
+    position: relative; width: min(360px, 90%); aspect-ratio: 4 / 5; justify-self: center;
+    border-radius: 28px; overflow: hidden; border: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .photo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-fallback {
+    display: none; position: absolute; inset: 0; align-items: center; justify-content: center;
+    font-family: "Archivo Black", sans-serif; font-size: 4rem; background: var(--grad); color: #fff;
+  }
+  .photo-wrap:has(img[style*="display: none"]) .photo-fallback { display: flex; }
+  .float-chip {
+    position: absolute; left: -16px; bottom: 28px; background: var(--panel); border: 1px solid var(--line);
+    padding: 10px 14px; border-radius: 14px; font-size: 0.85rem; box-shadow: 0 20px 40px -20px #000;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float { 50% { transform: translateY(-8px); } }
+
+  /* Reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* About */
+  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; }
+  .about-grid p + p { margin-top: 16px; }
+  .about-grid p { color: #d4d4dc; }
+  .facts { display: grid; gap: 12px; align-content: start; }
+  .fact { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
+  .fact strong { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); margin-bottom: 4px; font-weight: 500; }
+  .skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .skill {
+    padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); font-size: 0.88rem;
+    transition: border-color .2s, transform .2s; cursor: default;
+  }
+  .skill:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  /* Experience */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
+  .job { position: relative; margin-bottom: 28px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; }
+  .job::before { content: ""; position: absolute; left: -28px; top: 28px; width: 14px; height: 14px; border-radius: 50%; background: var(--grad); }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .job h3 { font-size: 1.2rem; }
+  .job-date { color: var(--muted); font-size: 0.9rem; white-space: nowrap; }
+  .job ul { margin-top: 12px; padding-left: 18px; color: #d4d4dc; }
+  .job li + li { margin-top: 6px; }
+
+  /* Projects */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+  .project-card {
+    text-align: left; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px; cursor: pointer; color: var(--text); font: inherit; position: relative; overflow: hidden;
+    transition: transform .25s, border-color .25s;
+  }
+  .project-card::after {
+    content: ""; position: absolute; inset: 0; background: var(--grad); opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 0;
+  }
+  .project-card:hover { transform: translateY(-6px); border-color: transparent; }
+  .project-card:hover::after { opacity: .06; }
+  .project-card > * { position: relative; z-index: 1; }
+  .project-num { font-family: "Archivo Black", sans-serif; font-size: 2.6rem; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .project-card h3 { font-size: 1.25rem; margin: 8px 0; }
+  .project-card p { color: var(--muted); font-size: 0.95rem; }
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+  .tag { font-size: 0.75rem; padding: 4px 10px; border-radius: 999px; background: #22222c; color: #cfcfd9; }
+  .status { position: absolute; top: 22px; right: 22px; font-size: 0.7rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+  .status.live { border-color: #3ddc97; color: #3ddc97; }
+
+  dialog {
+    width: min(640px, 92%); background: var(--panel); color: var(--text); border: 1px solid var(--line);
+    border-radius: 22px; padding: 0; box-shadow: 0 30px 80px -20px #000;
+  }
+  dialog::backdrop { background: rgba(0, 0, 0, .7); backdrop-filter: blur(4px); }
+  .dialog-body { padding: 32px; }
+  .dialog-body h3 { font-size: 1.6rem; margin: 10px 0 12px; }
+  .dialog-body ul { padding-left: 20px; color: #d4d4dc; margin: 16px 0; }
+  .dialog-body li + li { margin-top: 6px; }
+  .dialog-close { position: absolute; top: 14px; right: 14px; background: #22222c; border: none; color: var(--text); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1rem; }
+  .dialog-links { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+  .dialog-wrap { position: relative; }
+
+  /* Contact */
+  .contact-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: start; }
+  .contact-big { font-family: "Archivo Black", sans-serif; font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.05; }
+  .contact-list { display: grid; gap: 12px; }
+  .contact-item {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px;
+    text-decoration: none; transition: border-color .2s, transform .2s;
+  }
+  .contact-item:hover { border-color: var(--accent); transform: translateX(4px); }
+  .contact-item small { color: var(--muted); display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: .12em; }
+  .copy-btn { background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 0.8rem; }
+  .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  footer { padding: 32px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.85rem; }
+  footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+  /* Responsive */
+  @media (max-width: 860px) {
+    .hero-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; }
+    .photo-wrap { order: -1; }
+    .nav-links { display: none; }
+    section { padding: 72px 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<script>
+  // Edit these details before publishing.
+  const CONFIG = {
+    name: "Thinh Duy Do",
+    contactEmail: "davisdo.work@gmail.com",
+    linkedin: "https://www.linkedin.com/in/davisdowork/"
+  };
+</script>
+
+<nav id="nav">
+  <div class="container">
+    <a href="#top" class="logo">TDD<span style="color:var(--accent)">.</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="progress" id="progress"></div>
+  </div>
+</nav>
+
+<header id="top" class="hero">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow">Data Science · UC San Diego · GPA 3.6</p>
+      <h1>Thinh Duy Do</h1>
+      <div class="role" id="role"><span class="caret"></span></div>
+      <p class="hero-sub">I turn messy data into dashboards and findings people can act on, from SQL and ETL pipelines to statistical analysis and machine learning.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">View projects</a>
+        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+      </div>
+    </div>
+    <div class="photo-wrap reveal">
+      <img src="photo.jpg" alt="Thinh Duy Do" onerror="this.style.display='none'" />
+      <div class="photo-fallback">TD</div>
+      <div class="float-chip">Open to data analyst roles</div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="container about-grid">
+    <div class="reveal">
+      <p class="eyebrow">About me</p>
+      <h2 class="section-title">Analyst first,<br />engineer by training.</h2>
+      <p>I am a Data Science student at UC San Diego, where I study statistics, machine learning, and the data engineering behind them. My day-to-day strength is taking a question, pulling the right data with SQL and Python, and turning the results into a dashboard a stakeholder can use without help.</p>
+      <p>Most recently I worked as a Data Platform Intern at Rocket BI, where I tested BI platform features, validated data accuracy, built ETL steps into Google BigQuery, and designed Tableau and Power BI dashboards.</p>
+      <p>Outside work I follow soccer analytics closely and enjoy travel.</p>
+      <div class="skills" id="skills"></div>
+    </div>
+    <div class="facts reveal">
+      <div class="fact"><strong>Education</strong>Data Science, UC San Diego (HDSI). GPA 3.6</div>
+      <div class="fact"><strong>Target role</strong>Data Analyst</div>
+      <div class="fact"><strong>Also interested in</strong>Machine learning, AI engineering</div>
+      <div class="fact"><strong>Location</strong>San Diego, CA<br />Open to relocation</div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="container">
+    <p class="eyebrow reveal">Experience</p>
+    <div class="timeline" style="margin-top:40px">
+      <article class="job reveal">
+        <div class="job-head">
+          <h3>Data Platform Intern · Rocket BI</h3>
+          <span class="job-date">Feb – Sep 2025</span>
+        </div>
+        <ul>
+          <li>Tested BI platform features and identified data accuracy issues across marketing, sales, HR, and operations datasets.</li>
+          <li>Built SQL and Python (pandas) ETL steps that extract, clean, and load data into Google BigQuery.</li>
+          <li>Designed Tableau and Power BI dashboards and wrote data dictionaries for the team.</li>
+          <li>Debugged inconsistent records in the pipeline and documented the fixes.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <p class="eyebrow reveal">Projects</p>
+    <div class="projects-grid" id="projects-grid" style="margin-top:40px"></div>
+  </div>
+</section>
+
+<dialog id="project-dialog">
+  <div class="dialog-wrap">
+    <button class="dialog-close" aria-label="Close" onclick="document.getElementById('project-dialog').close()">✕</button>
+    <div class="dialog-body" id="dialog-body"></div>
+  </div>
+</dialog>
+
+<section id="contact">
+  <div class="container contact-grid">
+    <div class="reveal">
+      <p class="eyebrow">Contact</p>
+      <h2 class="contact-big">Let's build something<br />with your data.</h2>
+      <p style="color:var(--muted);margin-top:20px;max-width:480px">Open to data analyst roles and internships. The fastest way to reach me is email.</p>
+    </div>
+    <div class="contact-list reveal" id="contact-list"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <span>© <span id="year"></span> Thinh Duy Do</span>
+    <span>Built with HTML, CSS, and JavaScript</span>
+  </div>
+</footer>
+
+<script>
+/* ---------- Data: edit content here ---------- */
+const SKILLS = ["Python", "SQL", "pandas", "Tableau", "Power BI", "Google BigQuery", "ETL", "Statistics", "Hypothesis testing", "Regression", "scikit-learn", "PyTorch", "Git", "Data visualization"];
+
+const PROJECTS = [
+  {
+    num: "01", title: "Cooking Time vs. Recipe Ratings", status: "Live",
+    summary: "Statistical analysis of whether cooking time predicts recipe ratings, using Food.com data.",
+    details: [
+      "Exploratory data analysis and a missingness review.",
+      "Hypothesis test and a regression model of ratings.",
+      "Includes a fairness check on how the model treats different recipe groups."
+    ],
+    tools: ["Python", "pandas", "Statistics", "Regression"],
+    links: [
+      { label: "Live site", href: "https://davisdowork.github.io/recipe-rating-analysis" },
+      { label: "Code", href: "https://github.com/DavisDoWork/recipe-rating-analysis" }
+    ]
+  },
+  {
+    num: "02", title: "Subway Delay Forecasting with GNNs", status: "Research",
+    summary: "Graph neural network research on NYC subway delay forecasting using MTA GTFS data.",
+    details: [
+      "Built an event graph of arrivals, departures, and trip relationships.",
+      "Compared autoregressive GATv2 against a direct multi-horizon model.",
+      "Presented as a conference poster."
+    ],
+    tools: ["PyTorch Geometric", "GATv2", "AWS EC2", "Python"],
+    links: [{ label: "Code", href: "https://github.com/DavisDoWork/Direct-Multi-horizon-GATv2" }]
+  },
+  {
+    num: "03", title: "Customer Churn Analysis with SQL", status: "Code",
+    summary: "SQL and Python analysis of customer churn, from a cleaned customer dataset to churn drivers.",
+    details: [
+      "Cleaned the customer dataset before analysis.",
+      "Used SQL queries and a Jupyter notebook to explore churn patterns.",
+      "Full code and notebook are available on GitHub."
+    ],
+    tools: ["SQL", "Python", "Jupyter", "pandas"],
+    links: [{ label: "Code", href: "https://github.com/DavisDoWork/Customer_Churns_SQL" }]
+  }
+];
+
+/* ---------- Render ---------- */
+document.getElementById("year").textContent = new Date().getFullYear();
+
+document.getElementById("skills").innerHTML =
+  SKILLS.map(s => `<span class="skill">${s}</span>`).join("");
+
+function renderProjects() {
+  document.getElementById("projects-grid").innerHTML = PROJECTS.map((p, i) => `
+    <button class="project-card reveal" data-index="${i}">
+      <span class="status ${p.status === "Live" ? "live" : ""}">${p.status}</span>
+      <div class="project-num">${p.num}</div>
+      <h3>${p.title}</h3>
+      <p>${p.summary}</p>
+      <div class="tag-row">${p.tools.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+    </button>
+  `).join("");
+  observeReveals();
+}
+
+document.getElementById("projects-grid").addEventListener("click", e => {
+  const card = e.target.closest(".project-card");
+  if (!card) return;
+  const p = PROJECTS[card.dataset.index];
+  document.getElementById("dialog-body").innerHTML = `
+    <p class="eyebrow">Project ${p.num} · ${p.status}</p>
+    <h3>${p.title}</h3>
+    <p style="color:var(--muted)">${p.summary}</p>
+    <ul>${p.details.map(d => `<li>${d}</li>`).join("")}</ul>
+    <div class="tag-row">${p.tools.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+    <div class="dialog-links">${p.links.map(l => `<a class="btn btn-ghost" href="${l.href}" target="_blank" rel="noopener">${l.label}</a>`).join("")}</div>
+  `;
+  document.getElementById("project-dialog").showModal();
+});
+
+document.getElementById("project-dialog").addEventListener("click", e => {
+  if (e.target.id === "project-dialog") e.target.close();
+});
+
+/* Contact list with copy button */
+const contactItems = [
+  { label: "Email", value: CONFIG.contactEmail, href: `mailto:${CONFIG.contactEmail}`, copy: true },
+  { label: "LinkedIn", value: "linkedin.com/in/davisdowork", href: CONFIG.linkedin }
+];
+document.getElementById("contact-list").innerHTML = contactItems.map(c => `
+  <a class="contact-item" href="${c.href}" ${c.href.startsWith("http") ? 'target="_blank" rel="noopener"' : ""}>
+    <div><small>${c.label}</small>${c.value}</div>
+    ${c.copy ? `<button class="copy-btn" data-copy="${c.value}">Copy</button>` : "→"}
+  </a>
+`).join("");
+document.getElementById("contact-list").addEventListener("click", e => {
+  const btn = e.target.closest(".copy-btn");
+  if (!btn) return;
+  e.preventDefault();
+  navigator.clipboard?.writeText(btn.dataset.copy);
+  btn.textContent = "Copied";
+  setTimeout(() => (btn.textContent = "Copy"), 1500);
+});
+
+/* Typing role animation */
+const roles = ["Data Analyst", "Machine Learning Engineer", "AI Engineer", "Dashboard Builder"];
+const roleEl = document.getElementById("role");
+let r = 0, c = 0, deleting = false;
+function type() {
+  const word = roles[r];
+  const caret = '<span class="caret"></span>';
+  roleEl.innerHTML = word.slice(0, c) + caret;
+  if (!deleting && c < word.length) c++;
+  else if (deleting && c > 0) c--;
+  else {
+    deleting = !deleting;
+    if (!deleting) r = (r + 1) % roles.length;
+    return setTimeout(type, 1200);
+  }
+  setTimeout(type, deleting ? 40 : 90);
+}
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) type();
+else roleEl.textContent = roles[0];
+
+/* Scroll reveal */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); revealObserver.unobserve(en.target); } });
+}, { threshold: 0.15 });
+function observeReveals() {
+  document.querySelectorAll(".reveal:not(.in)").forEach(el => revealObserver.observe(el));
+}
+
+/* Nav active state and scroll progress */
+const sectionLinks = [...document.querySelectorAll(".nav-links a")];
+const sectionObserver = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      sectionLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id));
+    }
+  });
+}, { rootMargin: "-45% 0px -50% 0px" });
+document.querySelectorAll("section[id]").forEach(s => sectionObserver.observe(s));
+
+const progress = document.getElementById("progress");
+addEventListener("scroll", () => {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  progress.style.width = (scrollY / max * 100) + "%";
+}, { passive: true });
+
+renderProjects();
+observeReveals();
+</script>
+</body>
+</html>
